@@ -4,7 +4,14 @@
   <itop_url>https://localhost/</itop_url>
   <itop_login>admin</itop_login>
   <itop_password>admin</itop_password>
-  
+
+  <!-- Dell OME Variables -->
+  <ome_user>omeuser@domain.com</ome_user>
+  <ome_pass>Password</ome_pass>
+  <ome_url>https://openmanage.domain.com:2607/api/OME.svc/</ome_url>
+  <ome_report>Reports/26</ome_report>
+  <ome_wtype_order>4HR(24X7),MISCTIL,NBD,PROSUPIT,PHONESUPP,POW</ome_wtype_order>
+
   <!-- console_log_level: level of logging to console (std output)
   -1 : none, nothing will be logged to the console
    0 : System wide emergency errors only (LOG_EMERG)
