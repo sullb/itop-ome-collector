@@ -1,6 +1,6 @@
 <?php
 
-class DellOMECollector extends Collector
+class OMEWarrantyCollector extends Collector
 {
     protected $nomedata;
     protected $omeorder;
@@ -78,7 +78,7 @@ class DellOMECollector extends Collector
                 if(!isset($ds[$d[$SERIAL_POS]]) 
                   || !isset($ds[$d[$SERIAL_POS]][$d[$WTYPE_POS]])
                   || date_create($ds[$d[$SERIAL_POS]][$d[$WTYPE_POS]]) < $eow_date ) {
-                    $ds[$d[$SERIAL_POS]][$d[$WTYPE_POS]] = date_format($eow_date,"Y-m-d H:i:s");
+                    $ds[$d[$SERIAL_POS]][$d[$WTYPE_POS]] = date_format($eow_date,"Y-m-d");
                 }
             }
         }
