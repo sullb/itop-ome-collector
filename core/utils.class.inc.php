@@ -277,7 +277,7 @@ class Utils
 				CURLOPT_MAXREDIRS		=> 10,       // stop after 10 redirects
 				CURLOPT_SSL_VERIFYHOST	=> 0,   	 // Disabled SSL Cert checks
 				CURLOPT_SSL_VERIFYPEER	=> 0,   	 // Disabled SSL Cert checks
-				CURLOPT_SSLVERSION		=> 3,		 // MUST to prevent a strange SSL error: http://stackoverflow.com/questions/18191672/php-curl-ssl-routinesssl23-get-server-helloreason1112
+				#CURLOPT_SSLVERSION		=> 3,		 // MUST to prevent a strange SSL error: http://stackoverflow.com/questions/18191672/php-curl-ssl-routinesssl23-get-server-helloreason1112
 				CURLOPT_POST			=> count($aData),
 				CURLOPT_POSTFIELDS		=> http_build_query($aData),
 				CURLOPT_HTTPHEADER		=> $aHTTPHeaders,
