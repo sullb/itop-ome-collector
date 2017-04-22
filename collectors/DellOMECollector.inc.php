@@ -2,27 +2,27 @@
 
 class DellOMECollector extends Collector
 {
-	protected $nomedata;
+    protected $nomedata;
     protected $omeorder;
     protected $luServerPK;
  
-	public function Prepare()
-	{
+    public function Prepare()
+    {
         $bResult = parent::Prepare();
         $omeurl = Utils::GetConfigurationValue('ome_url', '');
-		$omeuser = Utils::GetConfigurationValue('ome_user', '');
-		$omepass = Utils::GetConfigurationValue('ome_pass', '');
+        $omeuser = Utils::GetConfigurationValue('ome_user', '');
+        $omepass = Utils::GetConfigurationValue('ome_pass', '');
         $omereport = Utils::GetConfigurationValue('ome_report', 'Reports/26');
         $this->omeorder = explode(',',Utils::GetConfigurationValue('ome_wtype_order', ''));
 
         $omedata = $this->getWarranties($omeurl, $omeuser, $omepass, $omereport);
         $this->nomedata = $this->normaliseWarranties($omedata);
 
-		return $bResult;
-	}
+        return $bResult;
+    }
  
-	public function Fetch()
-	{
+    public function Fetch()
+    {
         if(sizeof($this->nomedata)>0) {
             $serial = array_keys($this->nomedata)[0];
             $wdates = $this->nomedata[$serial];
@@ -37,8 +37,8 @@ class DellOMECollector extends Collector
             }
             return array('primary_key' => '', 'serialnumber' => $serial, 'end_of_warranty' => $eow);
         }
-		return false;
-	}
+        return false;
+    }
 
     private function getWarranties($ome, $user, $pass, $report) {
         $ch = curl_init($ome . $report);
@@ -85,19 +85,19 @@ class DellOMECollector extends Collector
         return($ds);
     }
 
-	protected function MustProcessBeforeSynchro()
-	{
-		return true;
-	}
+    protected function MustProcessBeforeSynchro()
+    {
+        return true;
+    }
 
-	protected function InitProcessBeforeSynchro()
-	{
-		$this->luServerPK = new LookupTable('SELECT Server', array('serialnumber'));
-	}
+    protected function InitProcessBeforeSynchro()
+    {
+        $this->luServerPK = new LookupTable('SELECT Server', array('serialnumber'));
+    }
 
-	protected function ProcessLineBeforeSynchro(&$aLineData, $iLineIndex)
-	{
-		// Process each line of the CSV
-		$this->luServerPK->Lookup($aLineData, array('serialnumber'), 'primary_key', $iLineIndex);
-	}
+    protected function ProcessLineBeforeSynchro(&$aLineData, $iLineIndex)
+    {
+        // Process each line of the CSV
+        $this->luServerPK->Lookup($aLineData, array('serialnumber'), 'primary_key', $iLineIndex);
+    }
 }
