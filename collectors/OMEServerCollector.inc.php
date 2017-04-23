@@ -60,9 +60,32 @@ class OMEServerCollector extends Collector
 			if(!empty((string)$device->SystemModel)) {
                 $rows[$st]['model_id'] = trim((string)$device->SystemModel);
 			}
+            $rows[$st] = array_merge($rows[$st], ($this->getDevicesFullDetails($ome, $user, $pass, $device->Id)));
         }
 		return $rows;
     }
+
+    private function getDevicesFullDetails($ome, $user, $pass, $id) {
+        $ch = curl_init($ome . 'Devices/' . $id);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, "${user}:${pass}");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        $response = '<?xml version="1.0" encoding="UTF-8"?>' . curl_exec($ch);
+        $response = curl_exec($ch);
+ 
+        $xmlDoc=new SimpleXMLElement($response);
+		$row = array();
+        foreach($xmlDoc->xpath("/DeviceInventoryResponse/DeviceInventoryResult") as $dir) {
+            $row['ram'] = (string)$dir->Memory->TotalMemory;
+            $row['cpu'] = count($dir->Processor->Processor);
+            return $row;
+        }
+        return array();
+    }
+
 
     protected function MustProcessBeforeSynchro()
     {
