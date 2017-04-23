@@ -1,1 +1,3 @@
-params.local.xml
+*
+!params.dist.xml
+!.gitignore
