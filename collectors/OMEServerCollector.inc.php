@@ -5,6 +5,7 @@ class OMEServerCollector extends Collector
     protected $omedata;
     protected $luServerPK;
 	protected $oModelLookup;
+    protected $oBrandLookup;
  
     public function Prepare()
     {
@@ -71,7 +72,8 @@ class OMEServerCollector extends Collector
     protected function InitProcessBeforeSynchro()
     {
         $this->luServerPK = new LookupTable('SELECT Server', array('serialnumber'));
-		$this->oModelLookup = new LookupTable('SELECT Model', array('brand_id_friendlyname', 'name'));		
+		$this->oModelLookup = new LookupTable('SELECT Model', array('brand_id_friendlyname', 'name'));
+        $this->oBrandLookup = new LookupTable('SELECT Brand', array('name'));
     }
 
     protected function ProcessLineBeforeSynchro(&$aLineData, $iLineIndex)
@@ -79,5 +81,6 @@ class OMEServerCollector extends Collector
         // Process each line of the CSV
         $this->luServerPK->Lookup($aLineData, array('serialnumber'), 'primary_key', $iLineIndex);
 		$this->oModelLookup->Lookup($aLineData, array('brand_id', 'model_id'), 'model_id', $iLineIndex);
+        $this->oBrandLookup->Lookup($aLineData, array('brand_id'), 'brand_id', $iLineIndex);
     }
 }
